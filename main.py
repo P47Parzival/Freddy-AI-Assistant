@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import webbrowser
 import pyttsx3 
+import musicLibrary
 
 recignizer = sr.Recognizer()
 engine = pyttsx3.init()
@@ -10,13 +11,30 @@ def speak(text):
     engine.runAndWait()
 
 def processcommand(c):
-    if "open google" in c.lower():
-        webbrowser.open("https://www.google.com")
-    elif "open youtube" in c.lower():
-        webbrowser.open("https://www.youtube.com")
-    elif "open linkedin" in c.lower():
-        webbrowser.open("https://www.linkedin.com")
+    if "open" in c.lower():
+        if "youtube" in c.lower():
+            speak("Opening Youtube")
+            webbrowser.open("https://www.youtube.com")
+        elif "google" in c.lower():
+            speak("Opening Google")
+            webbrowser.open("https://www.google.com")
+        elif "github" in c.lower():
+            speak("Opening Github")
+            webbrowser.open("https://www.github.com")
+        elif "notepad" in c.lower():
+            speak("Opening Notepad")
+            webbrowser.open("notepad.exe")
+        else:
+            speak("Sorry, I cannot open that.")
 
+    if c.lower().startswith("play"):
+        song = c.lower().split(" ")[1]
+        if song in musicLibrary.music:
+            link = musicLibrary.music[song]
+            speak(f'Playing {song}')
+            webbrowser.open(link)
+        else:
+            speak("Sorry i cant find that song in my library")
 
 if __name__ == "__main__":
     speak("Initializing Kaizen...")
