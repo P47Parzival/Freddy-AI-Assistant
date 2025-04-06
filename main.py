@@ -8,7 +8,7 @@ import openai as OpenAI
 
 recignizer = sr.Recognizer()
 engine = pyttsx3.init()
-newsapi = "65caba6136d34a2d98121055b0808fb2"
+newsapi = ""
 
 def speak(text):
     engine.say(text)
@@ -16,7 +16,7 @@ def speak(text):
 
 def aiProcess(command):
     client = OpenAI(
-    api_key="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",
+    api_key="",
 )
 
     completion = client.chat.completions.create(
