@@ -3,6 +3,7 @@ import webbrowser
 import pyttsx3 
 import musicLibrary
 import requests
+import openai as OpenAI
 
 
 recignizer = sr.Recognizer()
@@ -12,6 +13,27 @@ newsapi = "65caba6136d34a2d98121055b0808fb2"
 def speak(text):
     engine.say(text)
     engine.runAndWait()
+
+def aiProcess(command):
+    client = OpenAI(
+    api_key="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",
+)
+
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant named kaizen, consisting general task like alexa.",
+            },
+            {
+                "role": "user",
+                "content": command,
+            },
+        ],
+    )
+
+    return completion.choices[0].message.content
 
 def processcommand(c):
     if "open" in c.lower():
@@ -48,8 +70,9 @@ def processcommand(c):
                 speak(article['title'])
 
     else:
-        pass
-    
+        output = aiProcess(c)
+        speak(output)
+
 if __name__ == "__main__":
     speak("Initializing Kaizen...")
     while True:
