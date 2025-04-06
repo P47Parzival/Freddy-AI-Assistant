@@ -2,9 +2,12 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3 
 import musicLibrary
+import requests
+
 
 recignizer = sr.Recognizer()
 engine = pyttsx3.init()
+newsapi = "65caba6136d34a2d98121055b0808fb2"
 
 def speak(text):
     engine.say(text)
@@ -27,7 +30,7 @@ def processcommand(c):
         else:
             speak("Sorry, I cannot open that.")
 
-    if c.lower().startswith("play"):
+    elif c.lower().startswith("play"):
         song = c.lower().split(" ")[1]
         if song in musicLibrary.music:
             link = musicLibrary.music[song]
@@ -36,6 +39,17 @@ def processcommand(c):
         else:
             speak("Sorry i cant find that song in my library")
 
+    elif "news" in c.lower():
+        r = requests.get(f"https://newsapi.org/v2/top-headlines?country=in&apiKey={newsapi}")
+        if r.status_code == 200:
+            data = r.json() #parse the json response
+            articles = data.get('articles', []) #get the articles from response
+            for article in articles:
+                speak(article['title'])
+
+    else:
+        pass
+    
 if __name__ == "__main__":
     speak("Initializing Kaizen...")
     while True:
