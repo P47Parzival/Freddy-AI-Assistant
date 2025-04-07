@@ -4,19 +4,31 @@ import pyttsx3
 import musicLibrary
 import requests
 import openai as OpenAI
-
+from gtts import gTTS
+import pygame
 
 recignizer = sr.Recognizer()
 engine = pyttsx3.init()
-newsapi = ""
+newsapi = "65caba6136d34a2d98121055b0808fb2"
 
 def speak(text):
     engine.say(text)
     engine.runAndWait()
 
+def text_to_speech(text):
+    tts = gTTS(text)
+    tts.save("hello.mp3")
+
+    pygame.mixer.init()
+    pygame.mixer.music.unload()
+    pygame.mixer.music.play()
+
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+
 def aiProcess(command):
     client = OpenAI(
-    api_key="",
+    api_key="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",
 )
 
     completion = client.chat.completions.create(
@@ -24,7 +36,7 @@ def aiProcess(command):
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant named kaizen, consisting general task like alexa.",
+                "content": "You are a helpful assistant named kaizen, consisting general task like alexa. GIve short responces",
             },
             {
                 "role": "user",
